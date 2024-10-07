@@ -26,4 +26,8 @@ y = data['Excess Return'] # Stock's excess return
 
 X = sm.add_constant(x) # Add a constant (alpha) to the model
 model = sm.OLS(y.dropna(), X.dropna()) # Drop any missing values
+results = model.fit()
+
+# Print the regression summary
+print(results.summary())
 

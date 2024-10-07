@@ -22,3 +22,8 @@ data['Excess Return'] = data['Return'] - data['RF']
 
 # Perform the regression
 X = data[['Mkt-RF', 'SMB', 'HML']] # Fama-French factors
+y = data['Excess Return'] # Stock's excess return
+
+X = sm.add_constant(x) # Add a constant (alpha) to the model
+
+

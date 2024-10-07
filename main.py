@@ -19,3 +19,6 @@ data = pd.merge(tesla_data['Return'], ff_data, left_index=True, right_index=True
 
 # Calculate excess return (Tesla return minus risk-free rate)
 data['Excess Return'] = data['Return'] - data['RF']
+
+# Perform the regression
+X = data[['Mkt-RF', 'SMB', 'HML']] # Fama-French factors

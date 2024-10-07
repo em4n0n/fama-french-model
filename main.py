@@ -7,3 +7,6 @@ from datetime import datetime
 start = datetime(2020,1,1)
 end = datetime(2024,1,1)
 tesla_data = web.DataReader('TSLA', 'yahoo', start, end)
+
+# Download Fama-French 3 factors from Kennth French's data library
+ff_data = web.DataReader('F-F_Research_Data_Factors_daily', 'famafrench', start, end)[0]

@@ -1,33 +1,37 @@
-import pandas as pd
+import yfinance as yf
 import pandas_datareader.data as web
 import statsmodels.api as sm
-from datetime import datetime
+import pandas as pd
+import datetime
 
-# Download stock data from YFinance
-start = datetime(2020,1,1)
-end = datetime(2024,1,1)
-tesla_data = web.DataReader('TSLA', 'yahoo', start, end)
+# Define the date range
+start = datetime.datetime(2017, 1, 1)
+end = datetime.datetime(2024, 10, 1)
 
-# Download Fama-French 3 factors from Kennth French's data library
+# Fetch Tesla stock data using yfinance
+stock_data = yf.download('TSLA', start=start, end=end)
+
+# Fetch Fama-French factors data
 ff_data = web.DataReader('F-F_Research_Data_Factors_daily', 'famafrench', start, end)[0]
 
-# Calculate stock daily returns
-tesla_data['Return'] = tesla_data['Adj Close'].pct_change()
+# Convert Tesla stock 'Adj Close' to returns
+stock_data['Returns'] = stock_data['Adj Close'].pct_change()
 
-# Merge Tesla returns with Fama-French data
-data = pd.merge(tesla_data['Return'], ff_data, left_index=True, right_index=True)
+# Align the Tesla returns and Fama-French factors by date
+combined_data = pd.merge(stock_data['Returns'], ff_data, left_index=True, right_index=True)
 
-# Calculate excess return (Tesla return minus risk-free rate)
-data['Excess Return'] = data['Return'] - data['RF']
+# Drop rows with missing data
+combined_data = combined_data.dropna()
 
-# Perform the regression
-X = data[['Mkt-RF', 'SMB', 'HML']] # Fama-French factors
-y = data['Excess Return'] # Stock's excess return
+# Prepare dependent and independent variables
+y = combined_data['Returns']  # Tesla returns as the dependent variable
+X = combined_data[['Mkt-RF', 'SMB', 'HML']]  # Fama-French factors as independent variables
 
-X = sm.add_constant(x) # Add a constant (alpha) to the model
-model = sm.OLS(y.dropna(), X.dropna()) # Drop any missing values
-results = model.fit()
+# Add a constant to the model (for the intercept term)
+X = sm.add_constant(X)
 
-# Print the regression summary
-print(results.summary())
+# Build the Ordinary Least Squares (OLS) model
+model = sm.OLS(y, X).fit()
 
+# Print the model summary
+print(model.summary())

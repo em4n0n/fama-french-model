@@ -8,6 +8,7 @@ pandas = "*"
 pandas-datareader = "*"
 statsmodels = "*"
 datetime = "*"
+yfinance = "*"
 
 [dev-packages]
 

@@ -16,3 +16,6 @@ tesla_data['Return'] = tesla_data['Adj Close'].pct_change()
 
 # Merge Tesla returns with Fama-French data
 data = pd.merge(tesla_data['Return'], ff_data, left_index=True, right_index=True)
+
+# Calculate excess return (Tesla return minus risk-free rate)
+data['Excess Return'] = data['Return'] - data['RF']

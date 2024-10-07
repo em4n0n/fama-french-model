@@ -13,3 +13,6 @@ ff_data = web.DataReader('F-F_Research_Data_Factors_daily', 'famafrench', start,
 
 # Calculate stock daily returns
 tesla_data['Return'] = tesla_data['Adj Close'].pct_change()
+
+# Merge Tesla returns with Fama-French data
+data = pd.merge(tesla_data['Return'], ff_data, left_index=True, right_index=True)

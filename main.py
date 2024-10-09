@@ -9,7 +9,7 @@ start = datetime.datetime(2017, 1, 1)
 end = datetime.datetime(2024, 10, 1)
 
 # Fetch Tesla stock data using yfinance
-stock_data = yf.download('TSLA', start=start, end=end)
+stock_data = yf.download('COIN', start=start, end=end)
 
 # Fetch Fama-French factors data
 ff_data = web.DataReader('F-F_Research_Data_Factors_daily', 'famafrench', start, end)[0]
